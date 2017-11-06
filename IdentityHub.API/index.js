@@ -8,7 +8,7 @@ const express = require('express'),
 const config = require('./app/config/config'),
     router = require('./app/router');
 
-const app = express();
+const app = express(); 
 
 //configure mongoose
 mongoose.set('debug', config.mongooseDebug);
