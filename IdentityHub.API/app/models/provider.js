@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema,
-    ObjectID=Schema.ObjectID;
+    ObjectId=Schema.ObjectId;
 
 
 const ProviderSchema = new Schema({
-    // user: [{
-    //     type: ObjectID,
-    //     ref: 'User'
-    // }],
+    user: [{
+        type: ObjectId,
+        ref: 'User'
+    }],
     type: {
         type: String,
         required: true,

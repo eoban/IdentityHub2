@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema,
-    ObjectID=Schema.ObjectID;
+    ObjectId=Schema.ObjectId;
 
 
 const ClientSchema = new Schema({
@@ -15,11 +15,11 @@ const ClientSchema = new Schema({
         unique: true,
         required: true
     },
-    // AuthorizedApis:
-    //     [{
-    //         type: ObjectID,
-    //         ref: 'Api'
-    //     }]
+    AuthorizedApis:
+        [{
+            type: ObjectId,
+            ref: 'Api'
+        }]
 },
     {
         timestamps: true,

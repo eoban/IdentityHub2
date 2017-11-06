@@ -3,7 +3,7 @@ const mongoose = require('mongoose'),
     userSvc = require('../services/users');
 
 const Schema = mongoose.Schema,
-    ObjectID = mongoose.Schema.ObjectID;
+    ObjectId = mongoose.Schema.ObjectId;
 
 const UserSchema = new Schema({
     email: {
@@ -15,19 +15,19 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
-    // clients: [{
-    //     type: ObjectID,
-    //     ref: 'Client'
-    // }],
-    // apis:[{
-    //     type: ObjectID,
-    //     ref: 'Api'
-    // }],
-    // providers: [{
-    //     type: ObjectID,
-    //     ref: 'Provider'
-    // }]
+    },
+    clients: [{
+        type: ObjectId,
+        ref: 'Client'
+    }],
+    apis:[{
+        type: ObjectId,
+        ref: 'Api'
+    }],
+    providers: [{
+        type: ObjectId,
+        ref: 'Provider'
+    }]
 },
     {
         timestamps: true,
