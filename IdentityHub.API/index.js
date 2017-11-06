@@ -14,8 +14,9 @@ const app = express();
 mongoose.set('debug', config.mongooseDebug);
 mongoose.Promise = global.Promise
 mongoose.connect(config.database, { useMongoClient: true });
-require('./app/models/reseed')();
-
+if (process.env.reseed=="true"){
+    require('./app/models/reseed')();
+}
 //configure view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'app/ui'));

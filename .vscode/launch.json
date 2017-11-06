@@ -11,7 +11,7 @@
             "env": {
                 "reseed": "false"
             },
-            "program": "${workspaceFolder}\\index.js"
+            "program": "${workspaceFolder}\\IdentityHub.API\\index.js"
         },
         {
             "type": "node",
@@ -20,7 +20,7 @@
             "env": {
                 "reseed": "true"
             },
-            "program": "${workspaceFolder}\\index.js"
+            "program": "${workspaceFolder}\\IdentityHub.API\\index.js"
         }
 
     ]
