@@ -11,9 +11,12 @@ const ClientSchema = new Schema({
     },
     clientId: {
         type: String,
-        lowercase: true,
         unique: true,
         required: true
+    },
+    domain:{
+        type: ObjectId,
+        ref: 'Domain'
     },
     authorizedApis:
         [{

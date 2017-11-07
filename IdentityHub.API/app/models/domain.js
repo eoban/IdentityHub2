@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
 
 const DomainSchema = new Schema({
     name: {
@@ -9,10 +10,13 @@ const DomainSchema = new Schema({
     },
     domainId: {
         type: String,
-        lowercase: true,
         unique: true,
         required: true
     },
+    users:[{
+        type: ObjectId,
+        ref: 'User'
+    }]
 },
     {
         timestamps: true,

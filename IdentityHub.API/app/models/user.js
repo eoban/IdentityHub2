@@ -1,4 +1,4 @@
-const mongoose = require('mongoose'),    
+const mongoose = require('mongoose'),
     bcrypt = require('bcrypt-nodejs'),
     userSvc = require('../services/users');
 
@@ -20,13 +20,17 @@ const UserSchema = new Schema({
         type: ObjectId,
         ref: 'Client'
     }],
-    apis:[{
+    apis: [{
         type: ObjectId,
         ref: 'Api'
     }],
     providers: [{
         type: ObjectId,
         ref: 'Provider'
+    }],
+    domains: [{
+        type: ObjectId,
+        ref: 'Domain'
     }]
 },
     {

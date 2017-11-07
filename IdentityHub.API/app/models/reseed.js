@@ -47,7 +47,11 @@ updateRelation = function (entry) {
             function (cdata, cerr) {
                 seed.collections[entry.parentSchema].findOne(entry.parentQuery).then(function (pdata, perr) {
                     if (pdata) {
-                        pdata[entry.parentField].push(cdata._id);
+                        if (pdata[entry.parentField] && pdata[entry.parentField].push){
+                            pdata[entry.parentField].push(cdata._id);
+                        } else {
+                            pdata[entry.parentField]=cdata._id;
+                        }
                         pdata.save(function (err, data) {
                             resolve();
                         });
