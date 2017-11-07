@@ -16,8 +16,11 @@ mongoose.Promise = global.Promise
 mongoose.connect(config.database, { useMongoClient: true });
 
 if (process.env.reseed=="true"){
-    require('./app/models/reseed')();
+    require('./app/models/reseed')().then(function(){
+        console.log('reseed done');
+    });
 }
+
 //configure view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'app/ui'));
