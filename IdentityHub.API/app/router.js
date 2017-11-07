@@ -8,7 +8,9 @@ module.exports = function (app) {
 
     //public auth routes to retrieve a jwt
     apiRoutes.use('/auth',authRoutes);        
-    authRoutes.post('/token',authController.token)
-    
+    authRoutes.post('/token',authController.token);
+    authRoutes.post('/register',authController.register);
+    authRoutes.post('/authorizeClient',authController.authorizeClient)
+    authRoutes.post('/authorizeApi',authController.authorizeApi)
     app.use('/api', apiRoutes);
 };

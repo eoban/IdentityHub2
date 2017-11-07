@@ -23,7 +23,9 @@ exports.token=function(req,res,next){
             }else{
                 let userInfo = user.toJson();
                 res.status(200).json({
-                    token: 'Bearer ' + generateToken(userInfo),
+                    token: 'Bearer ' +jwt.sign(userInfo, config.secret, {
+                        expiresIn: 10080 // in seconds
+                    }),
                     user: userInfo
                  });
             }
@@ -31,12 +33,14 @@ exports.token=function(req,res,next){
     });
 }
 
-function generateToken(user) {
-    return jwt.sign(user, config.secret, {
-        expiresIn: 10080 // in seconds
-    });
+exports.register=function(req,res,next){
+    res.status(200).json({ok: true});    
 }
 
-exports.register=function(req,res,next){
+exports.authorizeClient=function(req,res,next){
+    res.status(200).json({ok: true});    
+}
+
+exports.authorizeApi=function(req,res,next){
     res.status(200).json({ok: true});    
 }
