@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
+
 const seed = require('../config/dataSeed');
+
 const timers = require('timers');
 
 //drop without fail if db does not exist
