@@ -14,6 +14,7 @@ const app = express();
 mongoose.set('debug', config.mongooseDebug);
 mongoose.Promise = global.Promise
 mongoose.connect(config.database, { useMongoClient: true });
+
 if (process.env.reseed=="true"){
     require('./app/models/reseed')();
 }

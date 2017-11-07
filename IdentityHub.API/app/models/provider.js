@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema,
-    ObjectId=Schema.ObjectId;
+    ObjectId=Schema.Types.ObjectId;
 
 
 const ProviderSchema = new Schema({
@@ -9,7 +9,7 @@ const ProviderSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     }],
-    type: {
+    providerType: {
         type: String,
         required: true,
         lowercase: true

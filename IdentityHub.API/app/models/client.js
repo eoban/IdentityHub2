@@ -9,13 +9,13 @@ const ClientSchema = new Schema({
         type: String,
         required: true
     },
-    ClientId: {
+    clientId: {
         type: String,
         lowercase: true,
         unique: true,
         required: true
     },
-    AuthorizedApis:
+    authorizedApis:
         [{
             type: ObjectId,
             ref: 'Api'

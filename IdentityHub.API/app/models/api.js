@@ -7,7 +7,7 @@ name: {
     type: String,
     required: true
 },
-ApiId: {
+apiId: {
     type: String,
     lowercase: true,
     unique: true,
