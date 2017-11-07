@@ -18,6 +18,9 @@ mongoose.connect(config.database, { useMongoClient: true });
 if (process.env.reseed=="true"){
     require('./app/models/reseed')().then(function(){
         console.log('reseed done');
+    }).catch(function(err){
+        console.error('reseed done with error');
+        console.error(err);
     });
 }
 
