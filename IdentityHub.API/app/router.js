@@ -7,7 +7,7 @@ module.exports = function (app) {
         authRoutes = express.Router();
 
     //public auth routes to retrieve a jwt
-    apiRoutes.use('/auth',authRoutes);        
+    apiRoutes.use('/auth',authRoutes);         
     authRoutes.post('/token',authController.token);
     authRoutes.post('/register',authController.register);
     authRoutes.post('/authorizeClient',authController.authorizeClient)
