@@ -1,7 +1,6 @@
 const mongoose = require('mongoose'),
-    bcrypt = require('bcrypt-nodejs'),
-    userSvc = require('../services/users');
-
+    bcrypt = require('bcrypt-nodejs');
+   
 const Schema = mongoose.Schema,
     ObjectId = mongoose.Schema.ObjectId;
 

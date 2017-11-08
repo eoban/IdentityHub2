@@ -1,31 +1,9 @@
-const jwt = require('jsonwebtoken');
-
-const config=require('../config/config'),
-    User=require('../models/user'),
-    Client=require('../models/client');
+const authSvc=require('../services/auth.service');
 
 exports.token=function(req,res,next){
-    User.findOne({ email: req.body.email }).populate("clients").then(function (user, err) {
-        if (err) { return res.status(400).json({ error: "bad data" }); }
-        if (!user) { return res.status(400).json({ error: 'Your login details could not be verified. Please try again.' }); }
-        user.comparePassword(req.body.password, function (err, isMatch) {
-            if (err) { return res.status(400).json({ error: "bad data" }); }
-            if (!isMatch) { return res.status(400).json({ error: 'Your login details could not be verified. Please try again.' }); }
-            if (!req.body.clientid) {
-                res.status(400).json({ error: "bad data" });                
-            } else if (user.clients.filter(function (item) { return item.clientId === req.body.clientid; }).length === 0) {
-                res.status(400).json({ error: "client not authorized" });
-            } else{
-                let userInfo = user.toJson();
-                res.status(200).json({
-                    token: 'Bearer ' +jwt.sign(userInfo, config.secret, {
-                        expiresIn: 10080 // in seconds
-                    }),
-                    user: userInfo
-                 });
-            }
-        });
-    });
+    authSvc.login(req.body.email,req.body.password,req.body.clientid)
+        .then(result=>res.status(200).json(result))
+        .catch(err=>res.status(400).json(err));
 }
 
 exports.register=function(req,res,next){

@@ -1,9 +1,9 @@
 module.exports = {
     collections: {
-        User: require('../models/user'),
-        Api: require('../models/api'),
-        Client: require('../models/client'),
-        Provider: require('../models/provider')
+        User: require('../models/auth/user'),
+        Api: require('../models/auth/api'),
+        Client: require('../models/auth/client'),
+        Provider: require('../models/auth/provider')
     },
     data: {
         User: [
