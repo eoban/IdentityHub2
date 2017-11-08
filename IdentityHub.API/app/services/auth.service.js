@@ -1,7 +1,5 @@
-const jwt = require('jsonwebtoken');
 
-const config=require('../config/config'),
-    User=require('../models/auth/user'),
+const User=require('../models/auth/user'),
     Client=require('../models/auth/client');
 
 exports.login=function(userName,password,client){
@@ -16,16 +14,13 @@ exports.login=function(userName,password,client){
                     return reject({ error: "bad data" });                
                 } else if (user.clients.filter(function (item) { return item.clientId === client; }).length === 0) {
                     return reject({ error: "client not authorized" });
-                } else{
-                    let userInfo = user.toJson();
-                    return resolve({
-                        token: 'Bearer ' +jwt.sign(userInfo, config.secret, {
-                            expiresIn: 10080 // in seconds
-                        }),
-                        user: userInfo
-                     });
+                } else {
+                    let token=user.toToken();
+                    let x=User.fromToken(token);
+                    return resolve(user.toToken());
                 }
             });
         });
     });
 }
+

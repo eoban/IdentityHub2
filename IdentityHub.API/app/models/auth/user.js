@@ -1,5 +1,7 @@
 const mongoose = require('mongoose'),
-    bcrypt = require('bcrypt-nodejs');
+    bcrypt = require('bcrypt-nodejs'),
+    jwt=require('jsonwebtoken'),
+    config=require('../../config/config');
    
 const Schema = mongoose.Schema,
     ObjectId = mongoose.Schema.ObjectId;
@@ -60,6 +62,22 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
 
         cb(null, isMatch);
     });
+}
+
+UserSchema.methods.toToken=function(){
+    let userInfo=this.toJson();
+    return {
+        token: 'Bearer ' +jwt.sign(userInfo, config.secret, {
+            expiresIn: 10080 // in seconds
+        }),
+        user: userInfo
+     }
+}
+UserSchema.statics.fromToken=function(token){
+    let temp=token.token.substring(7);
+    let v=jwt
+    let email=jwt.decode(temp);
+    let x=1;
 }
 
 module.exports = mongoose.model('User', UserSchema);
