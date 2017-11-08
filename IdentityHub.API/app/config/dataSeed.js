@@ -3,8 +3,7 @@ module.exports = {
         User: require('../models/user'),
         Api: require('../models/api'),
         Client: require('../models/client'),
-        Provider: require('../models/provider'),
-        Domain: require('../models/domain')
+        Provider: require('../models/provider')
     },
     data: {
         User: [
@@ -27,15 +26,6 @@ module.exports = {
                             schema: 'Api',
                             key: 'apiId',
                             queries: ['identityhubAPI', 'testapi']
-                        }
-                    },
-                    {
-                        key: 'email',
-                        field: 'domains',
-                        child: {
-                            schema: 'Domain',
-                            key: 'domainId',
-                            queries: ['site!global']
                         }
                     }
                 ]
@@ -60,15 +50,6 @@ module.exports = {
                             key: 'apiId',
                             queries: ['testapi']
                         }
-                    },
-                    {
-                        key: 'email',
-                        field: 'domains',
-                        child: {
-                            schema: 'Domain',
-                            key: 'domainId',
-                            queries: ['testDomain']
-                        }
                     }
                 ]
             }
@@ -85,15 +66,6 @@ module.exports = {
                             key: 'apiId',
                             queries: ['identityhubAPI']
                         }
-                    },
-                    {
-                        key: 'clientId',
-                        field: 'domains',
-                        child: {
-                            schema: 'Domain',
-                            key: 'domainId',
-                            queries: ['site!global']
-                        }
                     }
                 ]
 
@@ -109,15 +81,6 @@ module.exports = {
                             key: 'apiId',
                             queries: ['testapi']
                         }
-                    },
-                    {
-                        key: 'clientId',
-                        field: 'domains',
-                        child: {
-                            schema: 'Domain',
-                            key: 'domainId',
-                            queries: ['testDomain']
-                        }
                     }
                 ]
             }
@@ -125,64 +88,15 @@ module.exports = {
         Api: [
             {
                 data: { name: 'Identity API', apiId: 'identityhubAPI' },
-                relations: [
-                    {
-                        key: 'apiId',
-                        field: 'domain',
-                        child: {
-                            schema: 'Domain',
-                            key: 'domainId',
-                            queries: ['site!global']
-                        }
-                    }
-                ]
+                relations: []
 
             },
             {
                 data: { name: 'Test API', apiId: 'testapi' },
-                relations: [
-                    {
-                        key: 'apiId',
-                        field: 'domain',
-                        child: {
-                            schema: 'Domain',
-                            key: 'domainId',
-                            queries: ['testDomain']
-                        }
-                    }
-                ]
+                relations: []
             }
         ],
         Provider: [{ data: { providerType: 'google' }, relations: [] }],
-        Domain: [
-            {
-                data: { name: 'Site Global Domain', domainId: 'site!global' },
-                relations: [
-                    {
-                        key: 'domainId',
-                        field: 'users',
-                        child: {
-                            schema: 'User',
-                            key: 'email',
-                            queries: ['gsilber@cyberdaptive.com']
-                        }
-                    }
-                ]
-            },
-            {
-                data: { name: 'Test Domain', domainId: 'testDomain' },
-                relations: [
-                    {
-                        key: 'domainId',
-                        field: 'users',
-                        child: {
-                            schema: 'User',
-                            key: 'email',
-                            queries: ['test@test.com']
-                        }
-                    }
-                ]
-            }
-        ]
+       
     }
 } 

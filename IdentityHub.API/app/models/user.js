@@ -27,10 +27,6 @@ const UserSchema = new Schema({
     providers: [{
         type: ObjectId,
         ref: 'Provider'
-    }],
-    domains: [{
-        type: ObjectId,
-        ref: 'Domain'
     }]
 },
     {

@@ -12,10 +12,6 @@ const ApiSchema = new Schema({
         type: String,
         unique: true,
         required: true
-    },
-    domain: {
-        type: ObjectId,
-        ref: 'Domain'
     }
 },
     {
