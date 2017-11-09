@@ -77,7 +77,7 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
 }
 
 UserSchema.methods.toToken=function(){
-    let userInfo=this.toJson();
+    let userInfo={email: this.email};
     return {
         token: 'Bearer ' +jwt.sign(userInfo, config.secret, {
             expiresIn: 10080 // in seconds

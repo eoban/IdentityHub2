@@ -14,7 +14,7 @@ exports.validateToken = function (req, res, next) {
             }
             next();
         } catch (err) {
-            return res.end(err, 400);
+            return res.end(err.message, 400);
         }
     } else {
         return res.end('Authentication Required', 403);
@@ -56,28 +56,31 @@ exports.validateClaims = function (req, res, next) {
                     res.end('Invalid claims request', 400);
             })
             .catch(err => {
-                res.end(err, 400);
+                res.end(err.message, 400);
             });
     });
 }
 
+const _checkRoles=function(user,clientid,apiid,roles){
+    var validRoles=user.roles.filter(function(role){
+        if (role.roletype==="client"  && role.parentId===clientid)
+            return true;
+        else if (role.roletype=="api" && role.parentId===apiid)
+            return true;
+        return false;
+    }).map(role=>role.roles);
+    if (validRoles.length==0)
+        return [];
+    return validRoles[0].filter(function(item){
+        return roles.indexOf(item)!=-1;
+    });
+
+}
 
 exports.validateRolesAny = function (roles) {
     return function (req, res, next) {
         exports.validateClaims(req, res, function () {
-            var validRoles=req.user.roles.filter(function(role){
-                if (role.roletype==="client"  && role.parentId===req.body.clientid)
-                    return true;
-                else if (role.roletype=="api" && role.parentId===req.body.apiid)
-                    return true;
-                return false;
-            }).map(role=>role.roles);
-            if (validRoles.length==0)
-                return res.end('invalid role request',400);
-            var finalRoles=validRoles[0].filter(function(item){
-                return roles.indexOf(item)!=-1;
-            });
-            if (finalRoles.length==0)
+            if (_checkRoles(req.user,req.body.clientid,req.body.apiid,roles).length==0)
                 return res.end('invalid role request',400);
             return next();
         });
@@ -87,19 +90,7 @@ exports.validateRolesAny = function (roles) {
 exports.validateRolesAll = function (roles) {
     return function (req, res, next) {
         exports.validateClaims(req, res, function () {
-            var validRoles=req.user.roles.filter(function(role){
-                if (role.roletype==="client"  && role.parentId===req.body.clientid)
-                    return true;
-                else if (role.roletype=="api" && role.parentId===req.body.apiid)
-                    return true;
-                return false;
-            }).map(role=>role.roles);
-            if (validRoles.length==0)
-                return res.end('invalid role request',400);
-            var finalRoles=validRoles[0].filter(function(item){
-                return roles.indexOf(item)!=-1;
-            });
-            if (finalRoles.length!==roles.length)
+            if (_checkRoles(req.user,req.body.clientid,req.body.apiid,roles).length!==roles.length)
                 return res.end('invalid role request',400);
             return next();
         });
