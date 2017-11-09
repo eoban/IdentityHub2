@@ -62,9 +62,6 @@ exports.validateClaims = function (req, res, next) {
 exports.validateRolesAny = function (roles) {
     return function (req, res, next) {
         exports.validateClaims(req, res, function () {
-            if (!req.user){
-                return res.end('invalid role request',400);
-            }
             var validRoles=req.user.roles.filter(function(role){
                 if (role.roletype==="client"  && role.clientId===req.body.clientid)
                     return true;
@@ -87,9 +84,6 @@ exports.validateRolesAny = function (roles) {
 exports.validateRolesAll = function (roles) {
     return function (req, res, next) {
         exports.validateClaims(req, res, function () {
-            if (!req.user){
-                return res.end('invalid role request',400);
-            }
             var validRoles=req.user.roles.filter(function(role){
                 if (role.roletype==="client"  && role.clientId===req.body.clientid)
                     return true;
