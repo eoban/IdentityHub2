@@ -1,5 +1,6 @@
 const express = require('express');
-const authController=require('./controllers/auth.controller');
+const authController=require('./controllers/auth.controller'),
+    auth=require('./common/authMiddleware');
 
 module.exports = function (app) {
     // Initializing route groups
@@ -10,7 +11,8 @@ module.exports = function (app) {
     apiRoutes.use('/auth',authRoutes);         
     authRoutes.post('/token',authController.token);
     authRoutes.post('/register',authController.register);
-    authRoutes.post('/authorizeClient',authController.authorizeClient)
-    authRoutes.post('/authorizeApi',authController.authorizeApi)
+    authRoutes.post('/authorize',auth.validateClaims,authController.getAuthenticatedUser);
+    authRoutes.post('/testRole',auth.validateRolesAny(['user','bobo']),authController.getAuthenticatedUser);
+    authRoutes.post('/testRole2',auth.validateRolesAll(['user','bobo']),authController.getAuthenticatedUser);
     app.use('/api', apiRoutes);
 };

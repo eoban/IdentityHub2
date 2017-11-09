@@ -28,6 +28,18 @@ const UserSchema = new Schema({
     providers: [{
         type: ObjectId,
         ref: 'Provider'
+    }],
+    roles:[{
+        roletype:{
+            type: String,
+            possibleValues: ['client','api']
+        },
+        clientId:{
+            type:String
+        },
+        roles:[{
+            type: String
+        }]
     }]
 },
     {
@@ -53,7 +65,7 @@ UserSchema.pre('save', function (next) {
 });
 
 UserSchema.methods.toJson=function(){
-    return {email: this.email};
+    return {email: this.email,roles: this.roles};
 }
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     if (this.password === '*') { cb(null, false); return; }
@@ -72,12 +84,6 @@ UserSchema.methods.toToken=function(){
         }),
         user: userInfo
      }
-}
-UserSchema.statics.fromToken=function(token){
-    let temp=token.token.substring(7);
-    let v=jwt
-    let email=jwt.decode(temp);
-    let x=1;
 }
 
 module.exports = mongoose.model('User', UserSchema);

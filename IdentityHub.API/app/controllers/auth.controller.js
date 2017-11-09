@@ -10,10 +10,6 @@ exports.register=function(req,res,next){
     res.status(200).json({ok: true});    
 }
 
-exports.authorizeClient=function(req,res,next){
-    res.status(200).json({ok: true});    
-}
-
-exports.authorizeApi=function(req,res,next){
-    res.status(200).json({ok: true});    
+exports.getAuthenticatedUser=function(req,res,next){
+    res.status(200).json({user: req.user});
 }
