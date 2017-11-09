@@ -26,6 +26,9 @@ exports.validateClaims = function (req, res, next) {
     exports.validateToken(req, res, function () {
         if (!req.body.clientid && !req.body.apiid)
             return res.end('No claims requested', 400);
+        if (req.body.clientid && req.body.apiid) {
+            return res.end('invalid claims requested',400);
+        }
         var email = req.auth.email;
         User.findOne({ email: req.auth.email }).populate('clients').populate('apis')
             .then(result => {
@@ -63,9 +66,9 @@ exports.validateRolesAny = function (roles) {
     return function (req, res, next) {
         exports.validateClaims(req, res, function () {
             var validRoles=req.user.roles.filter(function(role){
-                if (role.roletype==="client"  && role.clientId===req.body.clientid)
+                if (role.roletype==="client"  && role.parentId===req.body.clientid)
                     return true;
-                else if (role.roletype=="api" && role.apiId===req.body.apiid)
+                else if (role.roletype=="api" && role.parentId===req.body.apiid)
                     return true;
                 return false;
             }).map(role=>role.roles);
@@ -85,9 +88,9 @@ exports.validateRolesAll = function (roles) {
     return function (req, res, next) {
         exports.validateClaims(req, res, function () {
             var validRoles=req.user.roles.filter(function(role){
-                if (role.roletype==="client"  && role.clientId===req.body.clientid)
+                if (role.roletype==="client"  && role.parentId===req.body.clientid)
                     return true;
-                else if (role.roletype=="api" && role.apiId===req.body.apiid)
+                else if (role.roletype=="api" && role.parentId===req.body.apiid)
                     return true;
                 return false;
             }).map(role=>role.roles);
@@ -96,7 +99,7 @@ exports.validateRolesAll = function (roles) {
             var finalRoles=validRoles[0].filter(function(item){
                 return roles.indexOf(item)!=-1;
             });
-            if (finalRoles.length!=roles.length)
+            if (finalRoles.length!==roles.length)
                 return res.end('invalid role request',400);
             return next();
         });

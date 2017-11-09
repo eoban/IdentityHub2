@@ -34,7 +34,7 @@ const UserSchema = new Schema({
             type: String,
             possibleValues: ['client','api']
         },
-        clientId:{
+        parentId:{
             type:String
         },
         roles:[{

@@ -8,7 +8,10 @@ module.exports = {
     data: {
         User: [
             {
-                data: { email: 'gsilber@cyberdaptive.com', password: 'test',roles: [{roletype: 'client', clientId: 'identityhubUI',roles:['user','admin']}] },
+                data: { email: 'gsilber@cyberdaptive.com', password: 'test',roles: [
+                    {roletype: 'client', parentId: 'identityhubUI',roles:['user','admin']},
+                    {roletype: 'api', parentId: 'identityhubAPI',roles:['user','admin']}
+                ] },
                 relations: [
                     {
                         key: 'email',
