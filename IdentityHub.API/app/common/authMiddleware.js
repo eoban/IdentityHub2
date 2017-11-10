@@ -10,14 +10,21 @@ exports.validateToken = function (req, res, next) {
         try {
             req.auth = jwt.verify(token.split(' ')[1], config.secret)
             if (!req.auth) {
-                return res.end('Invalid access token provided', 400);
+                return res.status(400).send('Invalid access token provided');
             }
-            next();
+            User.findOne({ email: req.auth.email }).populate('clients').populate('apis')
+                .then(result => {
+                    req.user = result.toJson();
+                    next();                    
+                })
+                .catch(err => {
+                    res.status(400).send(err.message);
+                });            
         } catch (err) {
-            return res.end(err.message, 400);
+            return res.status(400).send(err.message);
         }
     } else {
-        return res.end('Authentication Required', 403);
+        return res.status(403).send('Authentication Required');
     }
 };
 
@@ -25,20 +32,20 @@ exports.validateClaims = function (req, res, next) {
     req.user = null;
     exports.validateToken(req, res, function () {
         if (!req.body.clientid && !req.body.apiid)
-            return res.end('No claims requested', 400);
+            return res.status(400).send('No claims requested');
         if (req.body.clientid && req.body.apiid) {
-            return res.end('invalid claims requested',400);
+            return res.status(400).send('invalid claims requested');
         }
         var email = req.auth.email;
         User.findOne({ email: req.auth.email }).populate('clients').populate('apis')
             .then(result => {
-                if (result.length == 0)
-                    return res.end('User not found', 400);
+                if (!result)
+                    return res.status(400).send('User not found');
                 if (req.body.clientid) {
                     if (result.clients.filter(item => item.clientId === req.body.clientid).length > 0)
                         req.user = result.toJson();
                     else {
-                        return res.end('Invalid API claim requested', 400);
+                        return res.status(400).send('Invalid API claim requested');
                     }
 
                 }
@@ -48,15 +55,15 @@ exports.validateClaims = function (req, res, next) {
                     if (result.apis.filter(item => item.apiId === req.body.apiid).length > 0)
                         req.user = result.toJson();
                     else
-                        return res.end('Invalid API claim requested', 400);
+                        return res.status(400).send('Invalid API claim requested');
                 }
                 if (req.user)
                     next();
                 else
-                    res.end('Invalid claims request', 400);
+                    res.status(400).send('Invalid claims request');
             })
             .catch(err => {
-                res.end(err.message, 400);
+                res.status(400).send(err.message);
             });
     });
 }
@@ -81,7 +88,7 @@ exports.validateRolesAny = function (roles) {
     return function (req, res, next) {
         exports.validateClaims(req, res, function () {
             if (_checkRoles(req.user,req.body.clientid,req.body.apiid,roles).length==0)
-                return res.end('invalid role request',400);
+                return res.status(400).send('invalid role request');
             return next();
         });
     }
@@ -91,7 +98,7 @@ exports.validateRolesAll = function (roles) {
     return function (req, res, next) {
         exports.validateClaims(req, res, function () {
             if (_checkRoles(req.user,req.body.clientid,req.body.apiid,roles).length!==roles.length)
-                return res.end('invalid role request',400);
+                return res.status(400).send('invalid role request');
             return next();
         });
     }

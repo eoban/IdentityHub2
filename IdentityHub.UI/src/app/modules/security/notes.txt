@@ -1,0 +1,1 @@
+1.  Consuming app must inject this service in app.component to handle automated authentication callbacks.  If token is passed, this service will hide the token and extract it and setup authentication

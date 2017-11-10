@@ -12,6 +12,7 @@ module.exports = function (app) {
     authRoutes.post('/token',authController.token);
     authRoutes.post('/register',authController.register);
     authRoutes.post('/authorize',auth.validateClaims,authController.getAuthenticatedUser);
+    authRoutes.get('/getUserInfo',auth.validateToken,authController.getAuthenticatedUser);
     authRoutes.post('/testRole',auth.validateRolesAny(['user','bobo']),authController.getAuthenticatedUser);
     authRoutes.post('/testRole2',auth.validateRolesAll(['user','bobo']),authController.getAuthenticatedUser);
     app.use('/api', apiRoutes);
