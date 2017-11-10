@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class SecurityService {
   baseUrl = 'http://localhost:3000';
+  clientId = 'identityhubUI';
 
   constructor( @Inject(DOCUMENT) document: any, private _http: SecureHttpService, private _userSvc: UserService) {
     _userSvc.clearUser();
@@ -30,7 +31,7 @@ export class SecurityService {
   }
 
   getUser = () => {
-    return this._http.get(this.baseUrl + '/api/auth/getUserInfo')
+    return this._http.get(this.baseUrl + '/api/auth/getUserInfo/client/' + this.clientId)
     .map(data => {
       return data.json();
     }).subscribe(
